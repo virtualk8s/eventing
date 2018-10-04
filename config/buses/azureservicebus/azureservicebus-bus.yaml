@@ -14,38 +14,38 @@
 apiVersion: channels.knative.dev/v1alpha1
 kind: Bus
 metadata:
-  name: gcppubsub
+  name: azureservicebus
 spec:
   provisioner:
     name: provisioner
-    image: github.com/knative/eventing/pkg/buses/gcppubsub/provisioner
+    image: github.com/knative/eventing/pkg/buses/azureservicebus/provisioner
     args: [
       "-logtostderr",
       "-stderrthreshold", "INFO",
     ]
-    env: &env
-    - name: GOOGLE_CLOUD_PROJECT
-      valueFrom:
-        configMapKeyRef:
-          name: gcppubsub-bus-config
-          key: GOOGLE_CLOUD_PROJECT
-    - name: GOOGLE_APPLICATION_CREDENTIALS
-      value: /var/secrets/google/key.json
-    volumeMounts:
-    - name: google-cloud-key
-      mountPath: /var/secrets/google
+    # env: &env
+    # - name: GOOGLE_CLOUD_PROJECT
+    #   valueFrom:
+    #     configMapKeyRef:
+    #       name: gcppubsub-bus-config
+    #       key: GOOGLE_CLOUD_PROJECT
+    # - name: GOOGLE_APPLICATION_CREDENTIALS
+    #   value: /var/secrets/google/key.json
+    # volumeMounts:
+    # - name: google-cloud-key
+    #   mountPath: /var/secrets/google
   dispatcher:
     name: dispatcher
-    image: github.com/knative/eventing/pkg/buses/gcppubsub/dispatcher
+    image: github.com/knative/eventing/pkg/buses/azureservicebus/dispatcher
     args: [
       "-logtostderr",
       "-stderrthreshold", "INFO",
     ]
-    env: *env
-    volumeMounts:
-    - name: google-cloud-key
-      mountPath: /var/secrets/google
-  volumes:
-  - name: google-cloud-key
-    secret:
-      secretName: gcppubsub-bus-key
+    # env: *env
+    # volumeMounts:
+    # - name: google-cloud-key
+    #   mountPath: /var/secrets/google
+  # volumes:
+  # - name: google-cloud-key
+  #   secret:
+  #     secretName: gcppubsub-bus-key
